@@ -13,6 +13,8 @@
         //                this
                         new FilePrinter(Log.INFO,path,2,false)  // 一个写文件的Printer ,可以自己实现。
                         ,true,"",false);
+
+	SLog.init(builder);
         SLog.i(“this is a log utils.”);
         SLog.w(“this is a log utils.”);
         SLog.e(“this is a log utils.”);
