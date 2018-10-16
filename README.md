@@ -6,17 +6,79 @@
 - 如果不提供TAG,默认使用类名来做TAG。
 - 支持打印数组
 - 支持直接打印对象，默认调用对象的toString 方法。 
+
 使用方式 
 
 ```java 
-                Builder builder = new Builder(
-        //                this
-                        new FilePrinter(Log.INFO,path,2,false)  // 一个写文件的Printer ,可以自己实现。
-                        ,true,"",false);
 
-	SLog.init(builder);
-        SLog.i(“this is a log utils.”);
-        SLog.w(“this is a log utils.”);
-        SLog.e(“this is a log utils.”);
+    @Override
+    public boolean isLoggable(int priority) {
+        return true; // 开启打印，如果是发布的时候可以关掉
+    }
+
+    // 最终日志来到这里统一打印。
+    @Override
+    public void log(int priority, @Nullable String tag, @NonNull String message) {
+        // 不能在这里调用slog ，否则会死循环的。
+        Log.println(priority, tag, message);
+    }
+
+     @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+            // 一个可以写文件的printer ，也可以自己实现。
+            FilePrinter filePrinter = new FilePrinter(
+                    Log.INFO,           // 只将大于 info 级别的日志写入文件。
+                    path,               // 文件保存路径
+                    2,                  //保存天数
+                    false);             // 是否要加密
+            Builder b = new Builder();
+            b.setTAG(TAG);              // set print tag .
+            b.setPrinter(this);         // set printer  / filePrinter
+            b.showFunctionInfo(true);   // show func
+            b.showThreadInfo(true);     // show thread info
+            SLog.init(b);               // init slog 
+            SLog.d("print debug message");
+            SLog.d("-----------------------------------");
+        }
+    
+        @Override
+        protected void onStart() {
+            super.onStart();
+            SLog.i("print info message");
+            SLog.i("-----------------------------------");
+        }
+    
+        @Override
+        protected void onResume() {
+            super.onResume();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("age", 18);
+                SLog.json(jsonObject.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            SLog.i("-----------------------------------");
+        }
+    
+        @Override
+        protected void onStop() {
+            super.onStop();
+            SLog.w("print warn message");
+            SLog.w("-----------------------------------");
+        }
+    
+        @Override
+        protected void onDestroy() {
+            super.onDestroy();
+            SLog.e("print error meeeage");
+            SLog.e("-----------------------------------");
+        }
+
        
 ```
+- 打印效果如下
+![log](log.png)

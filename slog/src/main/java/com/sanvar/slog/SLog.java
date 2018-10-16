@@ -175,7 +175,7 @@ public final class SLog {
         if (builder.showThread) {
             sb.append(Thread.currentThread().getName()+ " ");
         }
-        if (builder.showFuntion){
+        if (builder.showFunction){
             sb.append(trace[index].getMethodName()+" ");
         }
         sb.append("(").append(trace[index].getFileName()).append(":").append(trace[index].getLineNumber()).append(") ");

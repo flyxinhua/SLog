@@ -5,7 +5,7 @@ public  class Builder{
     Printer printer;
     String TAG;
     boolean showThread;
-    boolean showFuntion;
+    boolean showFunction;
     public  Builder setPrinter(Printer printer) {
         this.printer = printer;
         return this;
@@ -22,8 +22,8 @@ public  class Builder{
         return this;
     }
 
-    public Builder showFuntionInfo(boolean showFuntion) {
-        this.showFuntion = showFuntion;
+    public Builder showFunctionInfo(boolean showFunction) {
+        this.showFunction = showFunction;
         return this;
     }
 
@@ -41,6 +41,6 @@ public  class Builder{
         this.printer = printer;
         this.showThread = showThread;
         this.TAG = TAG;
-        this.showFuntion = showFuntion;
+        this.showFunction = showFuntion;
     }
 }
